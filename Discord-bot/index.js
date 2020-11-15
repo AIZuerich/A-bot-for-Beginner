@@ -11,6 +11,52 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
+
+//functions---------------------------------------------------------------------------------------
+module.exports.mention_2 = function mention(mention) {
+	// The id is the first and only match found by the RegEx.
+	const matches = mention.match(/^<@!?(\d+)>$/);
+
+	// If supplied variable was not a mention, matches will be null instead of an array.
+	if (!matches) return;
+
+	// However the first element in the matches array will be the entire mention, not just the ID,
+	// so use index 1.
+	const id = matches[1];
+
+	return client.users.cache.get(id);
+}
+
+
+module.exports.mention = function mention(mention){
+    if(!mention)return;
+   
+
+    if(mention.startsWith("<@") && mention.endsWith(">")){
+        mention = mention.slice(2,-1)
+        console.log(mention + " 1")
+        if(mention.startsWith("!")){
+            mention = mention.slice(1);
+            console.log(mention+" 2")
+           
+        }
+        
+        return client.users.cache.get(mention)
+
+        }
+        
+        
+    }
+
+module.exports.mention_id = function mention(id){
+    return client.users.cache.get(id)
+}
+
+
+
+//-----------------------------------------------------------------------------------------
+
+
 //command handler
 const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
 
@@ -19,7 +65,6 @@ for(const file of commandFiles){
     client.commands.set(command.name,command);
     
 }
-
 //cooldowns
 const cooldowns = new Discord.Collection();
 
@@ -29,8 +74,18 @@ client.once('ready', () => {
 
 
 client.on('message', message => {
+
+    /*
+	const withoutPrefix = message.content.slice(config.prefix.length);
+	const split = withoutPrefix.split(/ +/);
+	const command = split[0];
+    const args = split.slice(1);
+    
+    */
     ///saftey
     if(!message.content.startsWith(prefix) || message.author.bot) return;
+    
+    //test
     
 
     //args and command
@@ -85,7 +140,7 @@ client.on('message', message => {
         command.execute(message,args);
       
     }catch(err1){
-        console.log(err1+"// This is err1")
+        console.log(err1)
     }
 
 });
