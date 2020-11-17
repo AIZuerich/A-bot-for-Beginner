@@ -1,2 +1,2 @@
-Beginner Bot. Discord js guide, but a changed. Working on it!
+Beginner Bot. Discord js guide, but changed. Working on it!
 A  bot for discord.
